@@ -1,0 +1,170 @@
+.destination-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.card-header h3 {
+  color: var(--color-primary);
+  font-size: 1.3rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.region {
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.card-body {
+  color: var(--color-text);
+  flex: 1;
+}
+
+.description {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+
+.card-meta {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.category {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.days {
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.attractions {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.attractions strong {
+  color: var(--color-text);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.attractions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.attractions li {
+  padding: var(--spacing-xs) 0;
+  padding-left: var(--spacing-sm);
+  position: relative;
+}
+
+.attractions li::before {
+  content: "•";
+  color: var(--color-primary);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.trip-type {
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.safety-info {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.safety-label {
+  font-weight: 500;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.safety-rating {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.safety-rating.safety-high {
+  background: #10b981;
+  color: white;
+}
+
+.safety-rating.safety-medium {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+.safety-rating.safety-low {
+  background: #ef4444;
+  color: white;
+}
+
+.safety-solo {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+}
+
+.days-info {
+  margin-top: var(--spacing-xs);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}

@@ -1,0 +1,289 @@
+[
+  {
+    "id": "goa-baga",
+    "name": "Baga Beach",
+    "region": "Goa",
+    "description": "Popular beach known for parties and water sports",
+    "coordinates": {
+      "lat": 15.5595,
+      "lng": 73.7505
+    },
+    "category": "beach",
+    "tripType": [
+      "party"
+    ],
+    "safetyRating": 3,
+    "safetyRatingSoloWoman": 3,
+    "crowdLevel": "high",
+    "ambiance": "loud",
+    "estimatedDays": 1
+  },
+  {
+    "id": "goa-candolim",
+    "name": "Candolim Beach",
+    "region": "Goa",
+    "description": "Calm and peaceful beach perfect for relaxation",
+    "coordinates": {
+      "lat": 15.5233,
+      "lng": 73.7623
+    },
+    "category": "beach",
+    "tripType": [
+      "calm"
+    ],
+    "safetyRating": 5,
+    "safetyRatingSoloWoman": 5,
+    "crowdLevel": "medium",
+    "ambiance": "calm",
+    "estimatedDays": 1
+  },
+  {
+    "id": "goa-aguada",
+    "name": "Fort Aguada",
+    "region": "Goa",
+    "description": "17th-century Portuguese fort with stunning sea views",
+    "coordinates": {
+      "lat": 15.4926,
+      "lng": 73.7732
+    },
+    "category": "heritage",
+    "tripType": [
+      "heritage"
+    ],
+    "safetyRating": 5,
+    "safetyRatingSoloWoman": 5,
+    "crowdLevel": "medium",
+    "ambiance": "calm",
+    "estimatedDays": 0.5
+  },
+  {
+    "id": "goa-basilica",
+    "name": "Basilica of Bom Jesus",
+    "region": "Goa",
+    "description": "UNESCO World Heritage Site, ancient Catholic church",
+    "coordinates": {
+      "lat": 15.4996,
+      "lng": 73.9112
+    },
+    "category": "heritage",
+    "tripType": [
+      "heritage",
+      "religious"
+    ],
+    "safetyRating": 5,
+    "safetyRatingSoloWoman": 5,
+    "crowdLevel": "medium",
+    "ambiance": "calm",
+    "estimatedDays": 0.5
+  },
+  {
+    "id": "goa-anjuna",
+    "name": "Anjuna Flea Market",
+    "region": "Goa",
+    "description": "Famous weekly market with vibrant shopping and food",
+    "coordinates": {
+      "lat": 15.5862,
+      "lng": 73.749
+    },
+    "category": "shopping",
+    "tripType": [
+      "party"
+    ],
+    "safetyRating": 3,
+    "safetyRatingSoloWoman": 3,
+    "crowdLevel": "high",
+    "ambiance": "loud",
+    "estimatedDays": 0.5
+  },
+  {
+    "id": "bangalore",
+    "name": "Bangalore",
+    "region": "Karnataka",
+    "description": "Garden City with tech parks, gardens, and vibrant urban culture",
+    "coordinates": {
+      "lat": 12.9716,
+      "lng": 77.5946
+    },
+    "category": "city",
+    "tripType": [
+      "urban",
+      "weekend"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 4,
+    "crowdLevel": "high",
+    "ambiance": "loud",
+    "estimatedDays": 2
+  },
+  {
+    "id": "rajasthan-jaipur",
+    "name": "Jaipur",
+    "region": "Rajasthan",
+    "description": "Pink City with palaces, forts, and rich heritage",
+    "coordinates": {
+      "lat": 26.9124,
+      "lng": 75.7873
+    },
+    "category": "heritage",
+    "tripType": [
+      "heritage"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 3,
+    "crowdLevel": "high",
+    "ambiance": "moderate",
+    "estimatedDays": 3
+  },
+  {
+    "id": "rajasthan-udaipur",
+    "name": "Udaipur",
+    "region": "Rajasthan",
+    "description": "City of Lakes, romantic destination with palaces",
+    "coordinates": {
+      "lat": 24.5854,
+      "lng": 73.7125
+    },
+    "category": "heritage",
+    "tripType": [
+      "romantic",
+      "heritage"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 4,
+    "crowdLevel": "medium",
+    "ambiance": "calm",
+    "estimatedDays": 2
+  },
+  {
+    "id": "rajasthan-pushkar",
+    "name": "Pushkar",
+    "region": "Rajasthan",
+    "description": "Sacred town known for art, culture, and Pushkar Lake",
+    "coordinates": {
+      "lat": 26.4897,
+      "lng": 74.5511
+    },
+    "category": "cultural",
+    "tripType": [
+      "art",
+      "cultural",
+      "religious"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 4,
+    "crowdLevel": "medium",
+    "ambiance": "calm",
+    "estimatedDays": 2
+  },
+  {
+    "id": "jammu-kashmir",
+    "name": "Jammu & Kashmir",
+    "region": "Jammu & Kashmir",
+    "description": "Paradise on Earth with stunning landscapes, lakes, and valleys",
+    "coordinates": {
+      "lat": 34.0837,
+      "lng": 74.7973
+    },
+    "category": "nature",
+    "tripType": [
+      "nature",
+      "romantic",
+      "calm"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 3,
+    "crowdLevel": "medium",
+    "ambiance": "calm",
+    "estimatedDays": 5
+  },
+  {
+    "id": "andaman",
+    "name": "Andaman & Nicobar Islands",
+    "region": "Andaman & Nicobar",
+    "description": "Tropical paradise with pristine beaches, coral reefs, and peaceful atmosphere",
+    "coordinates": {
+      "lat": 11.7401,
+      "lng": 92.6586
+    },
+    "category": "beach",
+    "tripType": [
+      "beach",
+      "nature",
+      "meditation"
+    ],
+    "safetyRating": 5,
+    "safetyRatingSoloWoman": 5,
+    "crowdLevel": "low",
+    "ambiance": "calm",
+    "estimatedDays": 5
+  },
+  {
+    "id": "spiti",
+    "name": "Spiti Valley",
+    "region": "Himachal Pradesh",
+    "description": "High-altitude desert valley, adventure destination with monasteries",
+    "coordinates": {
+      "lat": 32.2451,
+      "lng": 78.0662
+    },
+    "category": "adventure",
+    "tripType": [
+      "adventure"
+    ],
+    "safetyRating": 3,
+    "safetyRatingSoloWoman": 2,
+    "crowdLevel": "low",
+    "ambiance": "calm",
+    "estimatedDays": 5,
+    "physicalDemand": "high",
+    "highAltitude": true
+  },
+  {
+    "id": "shirdi",
+    "name": "Shirdi",
+    "region": "Maharashtra",
+    "description": "Famous pilgrimage site for Sai Baba devotees",
+    "coordinates": {
+      "lat": 19.7619,
+      "lng": 74.4783
+    },
+    "category": "religious",
+    "tripType": [
+      "religious",
+      "spiritual"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 3,
+    "crowdLevel": "high",
+    "ambiance": "calm",
+    "moodTag": [
+      "calm",
+      "reflective"
+    ],
+    "estimatedDays": 1
+  },
+  {
+    "id": "varanasi",
+    "name": "Varanasi",
+    "region": "Uttar Pradesh",
+    "description": "Ancient holy city on Ganges, spiritual capital of India",
+    "coordinates": {
+      "lat": 25.3176,
+      "lng": 82.9739
+    },
+    "category": "religious",
+    "tripType": [
+      "religious",
+      "spiritual"
+    ],
+    "safetyRating": 4,
+    "safetyRatingSoloWoman": 3,
+    "crowdLevel": "high",
+    "ambiance": "calm",
+    "moodTag": [
+      "calm",
+      "reflective"
+    ],
+    "estimatedDays": 2
+  }
+]

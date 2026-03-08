@@ -1,0 +1,272 @@
+.itinerary-detail-page {
+  animation: fadeIn 0.3s;
+}
+
+.detail-header {
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  background: #f0f0f0;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.back-btn:hover {
+  background: #e0e0e0;
+}
+
+.detail-header h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.itinerary-description {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.detail-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.map-container {
+  height: 600px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.destinations-list {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.destinations-list h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.route-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.route-item {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.route-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.route-number {
+  background: #667eea;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.route-details {
+  flex: 1;
+}
+
+.route-details h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.route-details p {
+  color: #666;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.route-meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.route-meta .category {
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.route-meta .days {
+  background: #f0f0f0;
+  color: #666;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+}
+
+.attractions {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.75rem;
+}
+
+.attractions strong {
+  color: #333;
+}
+
+.mood-adjustments-banner {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-left: 4px solid #667eea;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.mood-adjustments-banner h4 {
+  color: #667eea;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.mood-adjustments-banner p {
+  color: #555;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.mood-adjustments-banner ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mood-adjustments-banner li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #666;
+  line-height: 1.6;
+}
+
+.mood-adjustments-banner li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-weight: bold;
+}
+
+.safety-rating {
+  background: #4CAF50;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+}
+
+.food-recommendations {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.food-recommendations strong {
+  color: #333;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.food-rec {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border-radius: 5px;
+}
+
+.food-reasoning {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.food-avoid {
+  color: #d32f2f;
+  margin-top: 0.5rem;
+}
+
+.transport-suggestion {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.transport-suggestion strong {
+  color: #333;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.transport-suggestion p {
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.transport-mode {
+  display: inline-block;
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.error-container {
+  text-align: center;
+  padding: 3rem;
+}
+
+@media (max-width: 1024px) {
+  .detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 400px;
+  }
+}
+
