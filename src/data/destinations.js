@@ -2,6 +2,7 @@ const destinations = [
   {
     id: "goa",
     name: "Goa",
+    image: "/src/assets/images/goa.jpeg",
     subdestinations: [
       { id: "anjuna", name: "Anjuna Flea Market", description: "Famous for its vibrant flea market and beach parties.", tags: ["Shopping", "Beach"], safetyRating: 4.5, duration: "2-3 days" },
       { id: "baga", name: "Baga Beach", description: "Known for its nightlife and water sports.", tags: ["Beach", "Nightlife"], safetyRating: 4.0, duration: "1-2 days" },
@@ -13,13 +14,14 @@ const destinations = [
   {
     id: "rajasthan",
     name: "Rajasthan",
+    image: "/src/assets/images/rajasthan.jpeg",
     subdestinations: [
-      { id: "jaipur", name: "Jaipur", description: "The Pink City with palaces and vibrant bazaars.", tags: ["History", "Palace"], safetyRating: 4.7, duration: "3-4 days" },
-      { id: "udaipur", name: "Udaipur", description: "City of Lakes with romantic boat rides.", tags: ["Lakes", "Romantic"], safetyRating: 4.6, duration: "2-3 days" },
+      { id: "jaipur", name: "Jaipur", image: "/src/assets/images/jaipur.jpeg", description: "The Pink City with palaces and vibrant bazaars.", tags: ["History", "Palace"], safetyRating: 4.7, duration: "3-4 days" },
+      { id: "udaipur", name: "Udaipur", image: "/src/assets/images/udaipur.jpg", description: "City of Lakes with romantic boat rides.", tags: ["Lakes", "Romantic"], safetyRating: 4.6, duration: "2-3 days" },
       { id: "pushkar", name: "Pushkar", description: "Sacred town with a famous camel fair.", tags: ["Religious", "Cultural"], safetyRating: 4.4, duration: "1-2 days" },
     ],
   },
-  // ... (other destinations as per your list)
+  // ... (other destinations with their images)
 ];
 
 export default destinations;
