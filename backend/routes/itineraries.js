@@ -56,16 +56,16 @@ const getBudgetCategory = (budget) => {
 // Map destinations to budget categories
 const getDestinationBudgetCategory = (destinationId) => {
   // Low budget destinations
-  const lowBudgetIds = ['rajasthan-pushkar', 'varanasi', 'shirdi', 'rajasthan-jaipur', 'bangalore'];
+  const lowBudgetIds = ['rajasthan-pushkar', 'up-varanasi', 'rajasthan-jaipur'];
   
   // Mid budget destinations
   const midBudgetIds = [
     'goa-baga', 'goa-candolim', 'goa-aguada', 'goa-basilica', 'goa-anjuna', // All Goa
-    'rajasthan-udaipur', 'jammu-kashmir'
+    'rajasthan-udaipur', 'kashmir-dal-lake', 'kashmir-gulmarg'
   ];
   
   // High budget destinations
-  const highBudgetIds = ['andaman', 'spiti'];
+  const highBudgetIds = ['andaman-swaraj-dweep', 'hp-spiti'];
   
   if (lowBudgetIds.includes(destinationId)) {
     return 'low';
@@ -93,7 +93,10 @@ const generateItinerary = (destinations, tripType, duration, travelGroup, mood, 
     const budgetCategory = getBudgetCategory(budget);
     filtered = filtered.filter(dest => {
       const destBudgetCategory = getDestinationBudgetCategory(dest.id);
-      return destBudgetCategory === budgetCategory;
+      // For high budget, allow high, mid, low. For mid, allow mid, low.
+      if (budgetCategory === 'high') return true;
+      if (budgetCategory === 'mid') return destBudgetCategory !== 'high';
+      return destBudgetCategory === 'low';
     });
   }
 
@@ -101,7 +104,6 @@ const generateItinerary = (destinations, tripType, duration, travelGroup, mood, 
   if (tripType && tripType !== 'any') {
     filtered = filtered.filter(dest => {
       if (!dest.tripType) return false;
-      // Handle new trip type mappings
       const tripTypeMap = {
         'heritage': ['heritage'],
         'art': ['art', 'cultural'],
@@ -122,39 +124,41 @@ const generateItinerary = (destinations, tripType, duration, travelGroup, mood, 
   if (travelGroup === 'solo-woman') {
     filtered = filtered.filter(dest => {
       const safetyRating = dest.safetyRatingSoloWoman || dest.safetyRating || 0;
-      return safetyRating >= 3; // Only include safe destinations
+      return safetyRating >= 3;
     });
   }
+
+  // Cache fallback state before heavy strict filtering
+  const fallbackDestinations = [...filtered];
 
   // Filter by mood (if tired/low energy, prefer calm places)
   if (mood === 'tired' || mood === 'low') {
     filtered = filtered.filter(dest => {
-      return dest.ambiance === 'calm' || dest.moodTag?.includes('calm');
+      return !dest.ambiance || dest.ambiance === 'calm' || (dest.moodTag && dest.moodTag.includes('calm'));
     });
-  }
-
-  // Filter out physically demanding if tired or not adventure trip
-  if (mood === 'tired' || mood === 'low') {
+    // Filter out physically demanding
     filtered = filtered.filter(dest => !dest.physicalDemand || dest.physicalDemand !== 'high');
   } else if (tripType !== 'adventure' && tripType !== 'any') {
     filtered = filtered.filter(dest => !dest.physicalDemand || dest.physicalDemand !== 'high');
   }
 
+  // If overly strict emotion/physical filters wipe out array, revert to fallback
+  if (filtered.length === 0 && fallbackDestinations.length > 0) {
+    filtered = fallbackDestinations;
+  }
+
   // Filter by duration
   const totalDays = parseFloat(duration) || 1;
   if (totalDays <= 0.5) {
-    // Few hours - show most popular (low estimatedDays)
     filtered = filtered
       .filter(dest => (dest.estimatedDays || 1) <= 1)
       .sort((a, b) => (a.estimatedDays || 1) - (b.estimatedDays || 1))
       .slice(0, 3);
   } else if (totalDays <= 2) {
-    // 2 days - show major spots based on trip type
     filtered = filtered
       .filter(dest => (dest.estimatedDays || 1) <= 2)
       .slice(0, 4);
   } else {
-    // 5+ days - show all suitable spots
     filtered = filtered.slice(0, 8);
   }
 
@@ -166,7 +170,44 @@ const generateItinerary = (destinations, tripType, duration, travelGroup, mood, 
     return a.name.localeCompare(b.name);
   });
 
+  // Final fallback if duration filter wiped out results
+  if (filtered.length === 0 && fallbackDestinations.length > 0) {
+    return fallbackDestinations.slice(0, 4);
+  }
+
   return filtered;
+};
+
+// Helper to split destinations into daily groups
+const splitIntoDays = (destinations, durationStr) => {
+  const daysCount = parseInt(durationStr, 10) || 1;
+  const structured = [];
+  const totalPlaces = destinations.length;
+  const basePlacesPerDay = Math.floor(totalPlaces / daysCount);
+  let extraPlaces = totalPlaces % daysCount;
+  
+  let destIndex = 0;
+  for (let i = 1; i <= daysCount; i++) {
+    // If there's extra places, distribute them 1 per day until exhausted
+    const placesForToday = basePlacesPerDay + (extraPlaces > 0 ? 1 : 0);
+    if (extraPlaces > 0) extraPlaces--;
+    
+    const dayPlaces = [];
+    for (let j = 0; j < placesForToday; j++) {
+      if (destIndex < totalPlaces) {
+        dayPlaces.push(destinations[destIndex]);
+        destIndex++;
+      }
+    }
+    
+    if (dayPlaces.length > 0) {
+      structured.push({
+        day: i,
+        places: dayPlaces
+      });
+    }
+  }
+  return structured;
 };
 
 // POST generate-itinerary
@@ -205,9 +246,13 @@ router.post('/generate-itinerary', async (req, res) => {
     // Get budget category for response
     const budgetCategory = getBudgetCategory(budget);
 
+    // Group the locations linearly by duration
+    const dayWiseItinerary = splitIntoDays(itineraryDestinations, duration);
+
     // Return generated itinerary
     res.json({
       destinations: itineraryDestinations,
+      dayWiseItinerary,
       tripType,
       duration,
       travelGroup,

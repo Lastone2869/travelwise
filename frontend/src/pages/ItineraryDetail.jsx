@@ -30,9 +30,13 @@ function ItineraryDetail() {
     }
   }
 
-  const handleCheckInComplete = () => {
+  const handleCheckInComplete = async (updatedItinerary) => {
     // Reload itinerary to get updated recommendations
-    loadItinerary()
+    if (updatedItinerary) {
+      setItinerary(updatedItinerary)
+    } else {
+      loadItinerary()
+    }
   }
 
   if (loading) {
@@ -79,8 +83,8 @@ function ItineraryDetail() {
 
       {/* Mood Check-in */}
       <MoodCheckIn 
-        itineraryId={itinerary.id} 
-        userId={itinerary.userId}
+        itinerary={itinerary} 
+        userId={itinerary.userId || 'default'}
         onCheckInComplete={handleCheckInComplete}
       />
 
@@ -92,66 +96,113 @@ function ItineraryDetail() {
         <div className="destinations-list">
           <h2>Route ({itinerary.destinations.length} stops)</h2>
           <div className="route-list">
-            {itinerary.destinations.map((dest, index) => {
-              const dayType = index === 0 || index === itinerary.destinations.length - 1 ? 'travel' : 'rest'
-              return (
-                <div key={dest.id} className="route-item">
-                  <div className="route-number">{index + 1}</div>
-                  <div className="route-details">
-                    <h3>{dest.name}</h3>
-                    {dest.description && <p>{dest.description}</p>}
-                    <div className="route-meta">
-                      <span className="category">{dest.category}</span>
-                      <span className="days">{dest.estimatedDays} day{dest.estimatedDays !== 1 ? 's' : ''}</span>
-                      {dest.safetyRating && (
-                        <span className="safety-rating">
-                          🛡️ Safety: {dest.safetyRating}/5
-                        </span>
+            {itinerary.dayWiseItinerary ? (
+              itinerary.dayWiseItinerary.map((dayBlock) => (
+                <div key={`day-${dayBlock.day}`} className="day-block" style={{ marginBottom: '2rem' }}>
+                  <h3 style={{ borderBottom: '2px solid #eaeaea', paddingBottom: '0.5rem', marginBottom: '1rem' }}>Day {dayBlock.day}</h3>
+                  {dayBlock.places.map((dest, index) => {
+                    const dayType = 'travel'; // simplify for layout purposes
+                    return (
+                      <div key={dest.id} className="route-item">
+                        <div className="route-number">{index + 1}</div>
+                        <div className="route-details">
+                          <h3>{dest.name}</h3>
+                          {dest.description && <p>{dest.description}</p>}
+                          <div className="route-meta">
+                            <span className="category">{dest.category}</span>
+                            <span className="days">{dest.estimatedDays} day{dest.estimatedDays !== 1 ? 's' : ''}</span>
+                            {dest.safetyRating && <span className="safety-rating">🛡️ Safety: {dest.safetyRating}/5</span>}
+                          </div>
+                          {dest.foodRecommendations && dest.foodRecommendations.length > 0 && (
+                            <div className="food-recommendations">
+                              <strong>🍽️ Food Recommendations:</strong>
+                              {dest.foodRecommendations.map((rec, recIdx) => (
+                                <div key={recIdx} className="food-rec">
+                                  <p className="food-reasoning">{rec.reasoning}</p>
+                                  {rec.suggestions && rec.suggestions.length > 0 && <div><strong>Suggested:</strong> {rec.suggestions.join(', ')}</div>}
+                                  {rec.avoid && rec.avoid.length > 0 && <div className="food-avoid"><strong>Avoid:</strong> {rec.avoid.join(', ')}</div>}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {dest.transportSuggestion && (
+                            <div className="transport-suggestion">
+                              <strong>🚗 Transport Suggestion:</strong>
+                              <p>{dest.transportSuggestion.reasoning}</p>
+                              <span className="transport-mode">Mode: {dest.transportSuggestion.mode.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                            </div>
+                          )}
+                          {dest.attractions && dest.attractions.length > 0 && (
+                            <div className="attractions"><strong>Attractions:</strong> {dest.attractions.join(', ')}</div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ))
+            ) : (
+              itinerary.destinations.map((dest, index) => {
+                const dayType = index === 0 || index === itinerary.destinations.length - 1 ? 'travel' : 'rest'
+                return (
+                  <div key={dest.id} className="route-item">
+                    <div className="route-number">{index + 1}</div>
+                    <div className="route-details">
+                      <h3>{dest.name}</h3>
+                      {dest.description && <p>{dest.description}</p>}
+                      <div className="route-meta">
+                        <span className="category">{dest.category}</span>
+                        <span className="days">{dest.estimatedDays} day{dest.estimatedDays !== 1 ? 's' : ''}</span>
+                        {dest.safetyRating && (
+                          <span className="safety-rating">
+                            🛡️ Safety: {dest.safetyRating}/5
+                          </span>
+                        )}
+                      </div>
+  
+                      {/* Food Recommendations */}
+                      {dest.foodRecommendations && dest.foodRecommendations.length > 0 && (
+                        <div className="food-recommendations">
+                          <strong>🍽️ Food Recommendations ({dayType === 'travel' ? 'Travel Day' : 'Rest Day'}):</strong>
+                          {dest.foodRecommendations.map((rec, recIdx) => (
+                            <div key={recIdx} className="food-rec">
+                              <p className="food-reasoning">{rec.reasoning}</p>
+                              {rec.suggestions && rec.suggestions.length > 0 && (
+                                <div>
+                                  <strong>Suggested:</strong> {rec.suggestions.join(', ')}
+                                </div>
+                              )}
+                              {rec.avoid && rec.avoid.length > 0 && (
+                                <div className="food-avoid">
+                                  <strong>Avoid:</strong> {rec.avoid.join(', ')}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+  
+                      {/* Transport Suggestion */}
+                      {dest.transportSuggestion && (
+                        <div className="transport-suggestion">
+                          <strong>🚗 Transport Suggestion:</strong>
+                          <p>{dest.transportSuggestion.reasoning}</p>
+                          <span className="transport-mode">
+                            Mode: {dest.transportSuggestion.mode.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </span>
+                        </div>
+                      )}
+  
+                      {dest.attractions && dest.attractions.length > 0 && (
+                        <div className="attractions">
+                          <strong>Attractions:</strong> {dest.attractions.join(', ')}
+                        </div>
                       )}
                     </div>
-
-                    {/* Food Recommendations */}
-                    {dest.foodRecommendations && dest.foodRecommendations.length > 0 && (
-                      <div className="food-recommendations">
-                        <strong>🍽️ Food Recommendations ({dayType === 'travel' ? 'Travel Day' : 'Rest Day'}):</strong>
-                        {dest.foodRecommendations.map((rec, recIdx) => (
-                          <div key={recIdx} className="food-rec">
-                            <p className="food-reasoning">{rec.reasoning}</p>
-                            {rec.suggestions && rec.suggestions.length > 0 && (
-                              <div>
-                                <strong>Suggested:</strong> {rec.suggestions.join(', ')}
-                              </div>
-                            )}
-                            {rec.avoid && rec.avoid.length > 0 && (
-                              <div className="food-avoid">
-                                <strong>Avoid:</strong> {rec.avoid.join(', ')}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Transport Suggestion */}
-                    {dest.transportSuggestion && (
-                      <div className="transport-suggestion">
-                        <strong>🚗 Transport Suggestion:</strong>
-                        <p>{dest.transportSuggestion.reasoning}</p>
-                        <span className="transport-mode">
-                          Mode: {dest.transportSuggestion.mode.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                        </span>
-                      </div>
-                    )}
-
-                    {dest.attractions && dest.attractions.length > 0 && (
-                      <div className="attractions">
-                        <strong>Attractions:</strong> {dest.attractions.join(', ')}
-                      </div>
-                    )}
                   </div>
-                </div>
-              )
-            })}
+                )
+              })
+            )}
           </div>
         </div>
       </div>

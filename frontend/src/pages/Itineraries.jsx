@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { itinerariesAPI, destinationsAPI } from '../services/api'
+import { itinerariesAPI, destinationsAPI, preferencesAPI } from '../services/api'
+import { useAuth } from '../context/AuthContext'
 import DestinationCard from '../components/DestinationCard'
 import './Itineraries.css'
 
 function Itineraries() {
   const navigate = useNavigate()
+  const { currentUser } = useAuth()
   const [planningMode, setPlanningMode] = useState(null) // 'destination' or 'mood'
   const [selectedDestination, setSelectedDestination] = useState(null)
   const [selectedPlace, setSelectedPlace] = useState(null)
@@ -171,6 +173,21 @@ function Itineraries() {
         ...response.data,
         destinations: filteredDestinations
       })
+      
+      // Auto-save preferences if logged in
+      if (currentUser) {
+        try {
+          await preferencesAPI.update({
+            budgetMin: 0,
+            budgetMax: formData.budget,
+            travelAnxietyLevel: formData.mood === 'tired' ? 'low' : formData.mood === 'anxious' ? 'high' : 'medium',
+            foodSensitivity: formData.foodPreference === 'local' ? false : true,
+            lastUpdated: new Date().toISOString()
+          }, currentUser.uid);
+        } catch (e) {
+          console.error("Failed to auto-save preferences", e);
+        }
+      }
     } catch (err) {
       setError('Failed to generate itinerary. Please try again.')
       console.error(err)
@@ -420,7 +437,24 @@ function Itineraries() {
 
             {generatedItinerary && generatedItinerary.destinations.length > 0 && (
               <div className="generated-itinerary">
-                <h2>Your Personalized Itinerary</h2>
+                <div className="itinerary-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h2>Your Personalized Itinerary</h2>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={async () => {
+                      try {
+                        setLoading(true);
+                        const id = await itinerariesAPI.saveToFirestore(generatedItinerary, currentUser.uid);
+                        navigate(`/itinerary/${id}`);
+                      } catch (err) {
+                        setError('Failed to save itinerary');
+                        setLoading(false);
+                      }
+                    }}
+                  >
+                    Save & View Details →
+                  </button>
+                </div>
                 <div className="itinerary-meta">
                   <span>Duration: {generatedItinerary.duration} day(s)</span>
                   <span>Trip Type: {generatedItinerary.tripType}</span>
@@ -428,25 +462,44 @@ function Itineraries() {
                   <span>Destinations: {generatedItinerary.destinations.length}</span>
                 </div>
                 <div className="itinerary-destinations">
-                  {generatedItinerary.destinations.map((dest, index) => (
-                    <div key={dest.id} className="itinerary-destination-item">
-                      <div className="destination-number">{index + 1}</div>
-                      <div className="destination-info">
-                        <h3>{dest.name}</h3>
-                        {dest.region && <p className="region">{dest.region}</p>}
-                        {dest.description && <p className="description">{dest.description}</p>}
-                        <div className="destination-tags">
-                          {dest.category && <span className="tag category">{dest.category}</span>}
-                          {dest.tripType && dest.tripType.map((type, idx) => (
-                            <span key={idx} className="tag trip-type">{type}</span>
-                          ))}
-                          {dest.safetyRating && (
-                            <span className="tag safety">Safety: {dest.safetyRating}/5</span>
-                          )}
+                  {generatedItinerary.dayWiseItinerary ? (
+                    generatedItinerary.dayWiseItinerary.map((dayBlock) => (
+                      <div key={`day-${dayBlock.day}`} className="day-block" style={{ marginBottom: '2rem' }}>
+                        <h3 style={{ color: 'var(--primary-color, #1a2a40)', borderBottom: '2px solid #eaeaea', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
+                          Day {dayBlock.day}
+                        </h3>
+                        {dayBlock.places.map((dest, index) => (
+                          <div key={`${dayBlock.day}-${dest.id}`} className="itinerary-destination-item">
+                            <div className="destination-number">{index + 1}</div>
+                            <div className="destination-info">
+                              <h3>{dest.name}</h3>
+                              {dest.region && <p className="region">{dest.region}</p>}
+                              {dest.description && <p className="description">{dest.description}</p>}
+                              <div className="destination-tags">
+                                {dest.category && <span className="tag category">{dest.category}</span>}
+                                {dest.safetyRating && <span className="tag safety">Safety: {dest.safetyRating}/5</span>}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))
+                  ) : (
+                    generatedItinerary.destinations.map((dest, index) => (
+                      <div key={dest.id} className="itinerary-destination-item">
+                        <div className="destination-number">{index + 1}</div>
+                        <div className="destination-info">
+                          <h3>{dest.name}</h3>
+                          {dest.region && <p className="region">{dest.region}</p>}
+                          {dest.description && <p className="description">{dest.description}</p>}
+                          <div className="destination-tags">
+                            {dest.category && <span className="tag category">{dest.category}</span>}
+                            {dest.safetyRating && <span className="tag safety">Safety: {dest.safetyRating}/5</span>}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
             )}

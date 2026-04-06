@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { preferencesAPI } from '../services/api'
+import { useAuth } from '../context/AuthContext'
 import './Preferences.css'
 
 function Preferences() {
+  const { currentUser } = useAuth();
   const [preferences, setPreferences] = useState({
     travelAnxiety: false,
     travelAnxietyLevel: 'moderate',
@@ -39,9 +41,10 @@ function Preferences() {
   }, [])
 
   const loadPreferences = async () => {
+    if (!currentUser) return;
     try {
       setLoading(true)
-      const response = await preferencesAPI.get()
+      const response = await preferencesAPI.get(currentUser.uid)
       if (response.data && Object.keys(response.data).length > 0) {
         setPreferences({ ...preferences, ...response.data })
       }
@@ -58,7 +61,7 @@ function Preferences() {
     setMessage(null)
 
     try {
-      await preferencesAPI.update(preferences)
+      await preferencesAPI.update(preferences, currentUser.uid)
       setMessage({ type: 'success', text: 'Preferences saved successfully!' })
       setTimeout(() => setMessage(null), 3000)
     } catch (err) {

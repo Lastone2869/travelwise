@@ -5,12 +5,11 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const destinationsRoutes = require('./routes/destinations');
-const preferencesRoutes = require('./routes/preferences');
 const itinerariesRoutes = require('./routes/itineraries');
 const checkinsRoutes = require('./routes/checkins');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5005;
 
 // Middleware
 app.use(cors());
@@ -654,29 +653,7 @@ const initDataDir = async () => {
       await fs.writeFile(destinationsFile, JSON.stringify(defaultDestinations, null, 2));
     }
 
-    // Initialize preferences.json if it doesn't exist
-    const preferencesFile = path.join(dataDir, 'preferences.json');
-    try {
-      await fs.access(preferencesFile);
-    } catch {
-      await fs.writeFile(preferencesFile, JSON.stringify({}, null, 2));
-    }
-
-    // Initialize itineraries.json if it doesn't exist
-    const itinerariesFile = path.join(dataDir, 'itineraries.json');
-    try {
-      await fs.access(itinerariesFile);
-    } catch {
-      await fs.writeFile(itinerariesFile, JSON.stringify([], null, 2));
-    }
-
-    // Initialize checkins.json if it doesn't exist
-    const checkinsFile = path.join(dataDir, 'checkins.json');
-    try {
-      await fs.access(checkinsFile);
-    } catch {
-      await fs.writeFile(checkinsFile, JSON.stringify([], null, 2));
-    }
+// Keep destinations initialization, skip users, preferences, checkins because we use Firestore
   } catch (error) {
     console.error('Error initializing data directory:', error);
   }
@@ -684,7 +661,6 @@ const initDataDir = async () => {
 
 // Routes
 app.use('/api/destinations', destinationsRoutes);
-app.use('/api/preferences', preferencesRoutes);
 app.use('/api/itineraries', itinerariesRoutes);
 app.use('/api/checkins', checkinsRoutes);
 

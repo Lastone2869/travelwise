@@ -286,6 +286,13 @@ class RuleEngine {
         message: 'You have good energy! Current plan should work well.',
         suggestedChanges: []
       };
+    } else {
+      // Default case (e.g. calm)
+      adjustedPlan.recommendations = {
+        action: 'maintain',
+        message: 'You are feeling balanced. Your current itinerary looks perfect.',
+        suggestedChanges: []
+      };
     }
 
     return adjustedPlan;

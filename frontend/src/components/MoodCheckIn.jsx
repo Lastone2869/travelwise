@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { checkinsAPI, itinerariesAPI } from '../services/api'
 import './MoodCheckIn.css'
 
-function MoodCheckIn({ itineraryId, userId, onCheckInComplete }) {
+function MoodCheckIn({ itinerary, userId, onCheckInComplete }) {
   const [formData, setFormData] = useState({
     mood: '',
     energyLevel: 'medium',
@@ -39,19 +40,32 @@ function MoodCheckIn({ itineraryId, userId, onCheckInComplete }) {
     setMessage(null)
 
     try {
-      // TEMP: simulate successful mood check-in
-        setRecommendations([
-        'Start your day with calm, low-effort places',
-        'Avoid crowded areas today',
-        'Choose cafes, parks, or beaches'
-         ])
+      const checkinData = {
+        itineraryId: itinerary.id,
+        userId: userId,
+        mood: formData.mood,
+        energyLevel: formData.energyLevel,
+        stressLevel: formData.stressLevel,
+        notes: formData.notes
+      }
+      
+      const adjustResponse = await checkinsAPI.getAdjustments(itinerary, checkinData)
+      const newRecommendations = adjustResponse.data.recommendations
 
-      setMessage({ type: 'success', text: 'Check-in saved! Recommendations updated.' })
+      setRecommendations(newRecommendations)
+      
+      await checkinsAPI.saveCheckinToFirestore(checkinData)
+      
+      const itineraryUpdates = {
+        moodAdjustments: newRecommendations,
+        lastCheckin: new Date().toISOString()
+      };
+      await itinerariesAPI.updateInFirestore(itinerary.id, itineraryUpdates)
 
       setMessage({ type: 'success', text: 'Check-in saved! Here are personalized recommendations.' })
       
       if (onCheckInComplete) {
-        onCheckInComplete(response.data.checkin)
+        onCheckInComplete({ ...itinerary, ...itineraryUpdates })
       }
 
       // Reset form after delay
